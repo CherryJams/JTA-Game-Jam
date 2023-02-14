@@ -4,7 +4,7 @@ using UnityEngine.Audio;
 
 public class Radio : MonoBehaviour
 {
-    public AudioMixer audioMixer;
+    [SerializeField] private AudioMixer audioMixer;
     public List<RadioStation> radioStations;
     public int currentStation;
     public float waitBeforeOff = 15;
@@ -18,7 +18,7 @@ public class Radio : MonoBehaviour
 
     public void AdjustRadioVolume(float value)
     {
-        audioMixer.SetFloat("Volume", value);
+        audioMixer.SetFloat("Volume", Mathf.Log10(value) * 20);
     }
 
     public void PlayRadio()
@@ -32,6 +32,7 @@ public class Radio : MonoBehaviour
                 radioStations[i].isCurrentRadio = false;
             }
         }
+
         radioStations[currentStation].audioSource.volume = 1;
         radioStations[currentStation].isRadioStopped = false;
         radioStations[currentStation].isCurrentRadio = true;
