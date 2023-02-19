@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Radio.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/Menu.unity
+    guid: 9b11850a0026e5840830f3d77e81fb79
+  - enabled: 1
+    path: Assets/Scenes/Demo.unity
+    guid: a85f4577e1deef84d9c72f0c382393c1
   m_configObjects: {}
