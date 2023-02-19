@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject menu;
@@ -20,7 +19,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && childCount - 1 == currentChildIndex)
+        if (Input.GetKeyDown(KeyCode.Space) && childCount - 1 <= currentChildIndex)
         {
             SceneManager.LoadScene(1);
         }
