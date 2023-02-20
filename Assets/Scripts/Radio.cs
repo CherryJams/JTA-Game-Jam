@@ -1,18 +1,44 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class Radio : MonoBehaviour
 {
     [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private CharacterController2D characterController;
     public List<RadioStation> radioStations;
     public int currentStation;
     public float waitBeforeOff = 15;
+    public bool hasDoubleJumpCassette;
+    public bool isDoubleJumpCassettePlaying;
+    public bool hasClimbCassette;
+    public bool isClimbCassettePlaying;
 
     // Start is called before the first frame update
     void Start()
     {
         PlayRadio();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.J) && hasDoubleJumpCassette && currentStation != 1)
+        {
+            currentStation = 1;
+            PlayRadio();
+            isDoubleJumpCassettePlaying = true;
+            isClimbCassettePlaying = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.H) && hasClimbCassette && currentStation != 2)
+        {
+            currentStation = 2;
+            PlayRadio();
+            isDoubleJumpCassettePlaying = false;
+            isClimbCassettePlaying = true;
+        }
     }
 
 
@@ -27,12 +53,14 @@ public class Radio : MonoBehaviour
         {
             if (i != currentStation)
             {
+                radioStations[i].gameObject.GetComponent<Image>().enabled = false;
                 radioStations[i].audioSource.volume = 0;
                 radioStations[i].waitTime = waitBeforeOff;
                 radioStations[i].isCurrentRadio = false;
             }
         }
 
+        radioStations[currentStation].gameObject.GetComponent<Image>().enabled = true;
         radioStations[currentStation].audioSource.volume = 1;
         radioStations[currentStation].isRadioStopped = false;
         radioStations[currentStation].isCurrentRadio = true;

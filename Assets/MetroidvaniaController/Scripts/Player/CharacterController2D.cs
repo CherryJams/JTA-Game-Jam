@@ -11,7 +11,7 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private LayerMask m_WhatIsGround; // A mask determining what is ground to the character
     [SerializeField] private Transform m_GroundCheck; // A position marking where to check if the player is grounded.
     [SerializeField] private Transform m_WallCheck; //Posicion que controla si el personaje toca una pared
-
+    [SerializeField] private Radio radio;
     const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     private bool m_Grounded; // Whether or not the player is grounded.
     private Rigidbody2D m_Rigidbody2D;
@@ -20,7 +20,6 @@ public class CharacterController2D : MonoBehaviour
     private float limitFallSpeed = 25f; // Limit fall speed
 
     public bool canDoubleJump = true; //If player can double jump
-    public bool hasDoubleJump = false; //If player can double jump
     [SerializeField] private float m_DashForce = 25f;
     private bool canDash = true;
     private bool isDashing = false; //If player is dashing
@@ -185,7 +184,7 @@ public class CharacterController2D : MonoBehaviour
                 particleJumpDown.Play();
                 particleJumpUp.Play();
             }
-            else if (!m_Grounded && jump && canDoubleJump && hasDoubleJump && !isWallSliding)
+            else if (!m_Grounded && jump && canDoubleJump && radio.isDoubleJumpCassettePlaying && !isWallSliding)
             {
                 canDoubleJump = false;
                 m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);
@@ -193,7 +192,7 @@ public class CharacterController2D : MonoBehaviour
                 animator.SetBool("IsDoubleJumping", true);
             }
 
-            else if (m_IsWall && !m_Grounded)
+            else if (m_IsWall && radio.isClimbCassettePlaying && !m_Grounded)
             {
                 if (!oldWallSlidding && m_Rigidbody2D.velocity.y < 0 || isDashing)
                 {
@@ -264,12 +263,23 @@ public class CharacterController2D : MonoBehaviour
     {
         if (other.gameObject.name == "Double Jump")
         {
-            hasDoubleJump = true;
+            radio.currentStation = 1;
+            radio.PlayRadio();
+            radio.hasDoubleJumpCassette = true;
+            radio.isDoubleJumpCassettePlaying = true;
+            radio.isClimbCassettePlaying = false;
             Destroy(other.gameObject);
         }
-        else if (other.name == "Climbing")
+
+        if (other.name == "Climb")
         {
-            Debug.Log("you can climb");
+            radio.currentStation = 2;
+            radio.PlayRadio();
+            radio.hasClimbCassette = true;
+            radio.isDoubleJumpCassettePlaying = false;
+            radio.isClimbCassettePlaying = true;
+            Destroy(other.gameObject);
+            Debug.Log("You can climb");
         }
     }
 
