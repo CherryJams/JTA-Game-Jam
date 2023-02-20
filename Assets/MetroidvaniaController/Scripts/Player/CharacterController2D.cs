@@ -12,6 +12,8 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private Transform m_GroundCheck; // A position marking where to check if the player is grounded.
     [SerializeField] private Transform m_WallCheck; //Posicion que controla si el personaje toca una pared
     [SerializeField] private Radio radio;
+    [SerializeField] private GameObject doubleJumpPopup;
+    [SerializeField] private GameObject climbPopup;
     const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     private bool m_Grounded; // Whether or not the player is grounded.
     private Rigidbody2D m_Rigidbody2D;
@@ -268,6 +270,7 @@ public class CharacterController2D : MonoBehaviour
             radio.hasDoubleJumpCassette = true;
             radio.isDoubleJumpCassettePlaying = true;
             radio.isClimbCassettePlaying = false;
+            doubleJumpPopup.SetActive(true);
             Destroy(other.gameObject);
         }
 
@@ -278,8 +281,8 @@ public class CharacterController2D : MonoBehaviour
             radio.hasClimbCassette = true;
             radio.isDoubleJumpCassettePlaying = false;
             radio.isClimbCassettePlaying = true;
+            climbPopup.SetActive(true);
             Destroy(other.gameObject);
-            Debug.Log("You can climb");
         }
     }
 
