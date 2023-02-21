@@ -66,6 +66,7 @@ public class CharacterController2D : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Cursor.visible = true;
         bool wasGrounded = m_Grounded;
         m_Grounded = false;
 
@@ -283,6 +284,11 @@ public class CharacterController2D : MonoBehaviour
             radio.isClimbCassettePlaying = true;
             climbPopup.SetActive(true);
             Destroy(other.gameObject);
+        }
+
+        if (other.name == "End")
+        {
+            SceneManager.LoadScene(2);
         }
     }
 
